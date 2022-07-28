@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.integrate as integrate
 
-from animate import animate_movement
+from animate import Animator
 
 def circle_animated():
 
@@ -45,8 +45,9 @@ def circle_animated():
 		return dxdy
 
 	y = integrate.odeint(derivs, state, t)
-
-	animate_movement(y[:, 0], y[:, 1], dt)
+	return y[:, 0], y[:, 1], dt
 
 if __name__=="__main__":
-	circle_animated()
+	A = Animator()
+	A.animate_movement(circle_animated())
+	A.show_animations()
