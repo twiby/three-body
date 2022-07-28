@@ -3,10 +3,9 @@ import scipy.integrate as integrate
 
 from animate import Animator
 
-def circle_animated():
-
-	RADIUS = 2
-	CENTER = np.array([1, 1])
+def circle_animated(
+	RADIUS = 2,
+	CENTER = np.array([1, 1])):
 
 	# create a time array from 0..t_stop sampled at 0.02 second steps
 	dt = 0.02
@@ -49,5 +48,5 @@ def circle_animated():
 
 if __name__=="__main__":
 	A = Animator()
-	A.animate_movement(circle_animated())
+	A.animate_movement([circle_animated(), circle_animated(RADIUS = 1, CENTER = np.array([0, -1]))])
 	A.show_animations()
