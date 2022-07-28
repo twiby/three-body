@@ -15,6 +15,7 @@ def circle_animated():
 
 	th = 0
 	w = 2
+	W = 0.5
 
 	##### x = r cost
 	##### dxdt = -r w sint
@@ -23,8 +24,8 @@ def circle_animated():
 
 	##### vx^2 + vy^2 = r^2 * w^2
 
-	##### dvxdt = -r w^2 cost
-	##### dvydt = -r w^2 sint
+	##### dvxdt = -r w^2 cost - r W sint
+	##### dvydt = -r w^2 sint + r W cost
 
 	x0 = CENTER[0] + RADIUS * np.cos(th)
 	y0 = CENTER[1] + RADIUS * np.sin(th)
@@ -36,9 +37,11 @@ def circle_animated():
 		dxdy[0] = state[2]
 		dxdy[1] = state[3]
 
+		cost = (state[0] - CENTER[0]) / RADIUS
+		sint = (state[1] - CENTER[1]) / RADIUS
 		w = np.sqrt(state[2]**2 + state[3]**2) / RADIUS
-		dxdy[2] = - RADIUS * w * w * (state[0] - CENTER[0]) / RADIUS
-		dxdy[3] = - RADIUS * w * w * (state[1] - CENTER[1]) / RADIUS
+		dxdy[2] = - RADIUS * w * w * cost - RADIUS * W * sint 
+		dxdy[3] = - RADIUS * w * w * sint + RADIUS * W * cost
 		return dxdy
 
 	y = integrate.odeint(derivs, state, t)
