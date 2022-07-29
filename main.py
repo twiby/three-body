@@ -2,6 +2,7 @@ import numpy as np
 import scipy.integrate as integrate
 
 from animate import Animator
+from gravitational_system import two_body_system
 
 def circle_animated(
 	RADIUS = 2,
@@ -101,5 +102,8 @@ def pendulum(
 
 if __name__=="__main__":
 	A = Animator()
-	A.animate_movement(pendulum(RADIUS = 1, CENTER = np.array([0, -1])))
+	# A.animate_movement(pendulum(RADIUS = 1, CENTER = np.array([0, -1])))
+
+	x0, y0, x1, y1 = two_body_system()
+	A.animate_movement([(x0,y0, 1/365), (x1,y1, 1/365)])
 	A.show_animations()
