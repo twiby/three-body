@@ -8,7 +8,7 @@ class GravitationalSystem:
 		self.N = N
 		self.M1 = 2e30 ### mass of the sun
 		self.M2 = self.M1 / 2 
-		self.M = [self.M2, self.M1, self.M1]
+		self.M = [self.M1/self.N for _ in range(self.N)]
 		self.G = 6.67e-11 ### gravitational constant
 		self.D = 152e9/2 ### distance earth-sun
 		self.V = 30000 / 2
@@ -21,15 +21,10 @@ class GravitationalSystem:
 			self.state[self.x(n)] = self.D * np.cos(th)
 			self.state[self.y(n)] = self.D * np.sin(th)
 
-			if n == 0:
-				V = np.array([0, self.V])
-			elif n == N-1:
-				V = -P / self.M[n]
-			else:
-				V = -P / self.M[n]/2
-
-			P += V * self.M[n]
+			V = self.V * np.array([np.sin(th), -np.cos(th)])
 			self.state[self.vx(n)], self.state[self.vy(n)] = V
+
+		self.state[self.vy(0)] *= 0.99
 
 
 	def x(self, n):
@@ -62,13 +57,14 @@ class GravitationalSystem:
 				F += -relative_position / R * self.G / R / R * self.M[n2]
 
 			dxdy[self.vx(n)], dxdy[self.vy(n)] = F
-
 		return dxdy
 
 	def run(self, dt = 60*60*24, t_stop = 60*60*24*365):
 
 		# create a time array from 0..t_stop sampled at 0.02 second steps
 		t = np.arange(0, t_stop, dt)
+		self.dt = dt
+		self.t_stop = t_stop
 		y = integrate.odeint(GravitationalSystem.derivs, self.state, t, (self,))
 		return [(y[:,self.x(n)], y[:, self.y(n)], 1/365) for n in range(self.N)]
 

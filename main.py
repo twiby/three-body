@@ -102,5 +102,5 @@ def pendulum(
 
 if __name__=="__main__":
 	A = Animator()
-	A.animate_movement(GravitationalSystem(3).run(dt = 60*60*24/4, t_stop = 60*60*24*365))
+	A.animate_movement(GravitationalSystem(5).run(dt = 60*60*24/4, t_stop = 60*60*24*365))
 	A.show_animations()
